@@ -107,7 +107,7 @@ module.exports = Bang =
     # Run an asynchronous process if there
     # is no input and don't have to edit the text
     if @dryCmd and not input.length
-      exec cmd, cwd: cwd, (error, stdout, stderr) ->
+      exec cmd, {cwd: cwd, stdio: 'pipe', shell: 'cmd.exe'}, (error, stdout, stderr) ->
         if error
           dirMessage += '\n' + stderr
           atom.notifications.addWarning('Attention', {detail: dirMessage, dismissable: missNote})
@@ -117,7 +117,7 @@ module.exports = Bang =
         return
       return
     try
-      output = execSync cmd, {cwd, input: input, timeout: 5e3}
+      output = execSync cmd, {cwd, input: input, timeout: 5e3, stdio: 'pipe', shell: 'cmd.exe'}
       output = output.toString()
     catch e
       dirMessage += '\n' + e.stderr.toString()
